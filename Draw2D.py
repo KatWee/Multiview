@@ -13,7 +13,7 @@ class Draw2D :
         self.s.screensize(800,800,bg="white")
         self.t.pencolor("black")
         self.t.pensize(3)
-        self.t.speed(10)
+        self.t.speed(0)
 
         maxX, minX = self.FindMinMax(0)
         maxY, minY = self.FindMinMax(1)
@@ -24,24 +24,22 @@ class Draw2D :
             end = self.verticies[edge[1]]
 
             #front view
-            #self.DrawFront(start, end)
+            self.DrawFront(start, end)
 
             #right view
-            #self.DrawRight(start, end)
+            self.DrawRight(start, end)
 
             #left view
-            #self.DrawLeft(start, end)
+            self.DrawLeft(start, end)
 
             #top view
-            #self.DrawTop(start, end)
+            self.DrawTop(start, end)
 
             #bottom view
-            #self.DrawBottom(start, end)
+            self.DrawBottom(start, end)
 
             #back view
-            #self.DrawBack(start, end)
-
-
+            self.DrawBack(start, end)
 
         self.t.hideturtle()
         turtle.done()
@@ -80,9 +78,9 @@ class Draw2D :
 
 
     def DrawRight(self, start, end) :
-        startX = -start[0] * 5
+        startX = -start[0] * 5 + 100
         startZ = start[2] * 5
-        endX = -end[0] * 5
+        endX = -end[0] * 5 + 100
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
@@ -90,9 +88,9 @@ class Draw2D :
 
 
     def DrawLeft(self, start, end) :
-        startX = start[0] * 5
+        startX = start[0] * 5 - 100
         startZ = start[2] * 5
-        endX = end[0] * 5
+        endX = end[0] * 5 - 100
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
@@ -100,9 +98,9 @@ class Draw2D :
 
 
     def DrawTop(self, start, end) :
-        startX = -start[0] * 5
+        startX = -start[0] * 5 + 110
         startY = start[1] * 5
-        endX = -end[0] * 5
+        endX = -end[0] * 5 + 110
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
@@ -110,9 +108,9 @@ class Draw2D :
 
 
     def DrawBottom(self, start, end) :
-        startX = start[0] * 5
+        startX = start[0] * 5 - 110
         startY = start[1] * 5
-        endX = end[0] * 5
+        endX = end[0] * 5 - 110
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
@@ -120,9 +118,9 @@ class Draw2D :
 
 
     def DrawBack(self, start, end) :
-        startY = -start[1] * 5
+        startY = -start[1] * 5 - 200
         startZ = start[2] * 5
-        endY = -end[1] * 5
+        endY = -end[1] * 5 - 200
         endZ = end[2] * 5
 
         self.JumpTo(startY, startZ)
