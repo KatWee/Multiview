@@ -35,17 +35,17 @@ class Draw2D :
             #back view
             self.DrawBack(start, end, 0)
 
-            # #right view
-            # self.DrawRight(start, end, 0)
+            #right view
+            self.DrawRight(start, end, 0)
 
-            # #left view
-            # self.DrawLeft(start, end, 0)
+            #left view
+            self.DrawLeft(start, end, 0)
 
-            # #top view
-            # self.DrawTop(start, end, 0)
+            #top view
+            self.DrawTop(start, end, 0)
 
-            # #bottom view
-            # self.DrawBottom(start, end, 0)
+            #bottom view
+            self.DrawBottom(start, end, 0)
 
 
         for edge in self.edges:
@@ -53,23 +53,57 @@ class Draw2D :
             end = self.verticies[edge[1]]
 
             #front view
-            if self.CheckBehind(maxX, maxX, minX, minY, maxY, minZ, maxZ, start, end) :
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
                 self.DrawFront(start, end, 1)
             #back view
-            if self.CheckBehind(minX, minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
                 self.DrawBack(start, end, 1)
 
-            # #right view
-            # self.DrawRight(start, end, 0)
+            #right view
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
+                self.DrawRight(start, end, 1)
 
-            # #left view
-            # self.DrawLeft(start, end, 0)
+            #left view
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
+                self.DrawLeft(start, end, 1)
 
-            # #top view
-            # self.DrawTop(start, end, 0)
+            #top view
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
+                self.DrawTop(start, end, 1)
 
-            # #bottom view
-            # self.DrawBottom(start, end, 0)
+            #bottom view
+            if self.CheckBehind(minX ,maxX, minY, maxY, minZ, maxZ, start, end) :
+                self.DrawBottom(start, end, 1)
+
+        for edge in self.edges:
+            start = self.verticies[edge[0]]
+            end = self.verticies[edge[1]]
+            print(start)
+            print(maxX,maxY,minY, maxY, minZ, maxZ)
+
+            #front view
+            if self.CheckTopPlane(0,maxX,start) :
+                self.DrawFront(start, end, 0)
+
+            #back view
+            if self.CheckTopPlane(0,minX,start) :
+                self.DrawBack(start, end, 0)
+
+            #right view
+            if self.CheckTopPlane(1,maxY,start) :
+                self.DrawRight(start, end, 0)
+
+            #left view
+            if self.CheckTopPlane(1,minY,start) :
+                self.DrawLeft(start, end, 0)
+
+            #top view
+            if self.CheckTopPlane(2,maxZ,start) :
+                self.DrawTop(start, end, 0)
+
+            #bottom view
+            if self.CheckTopPlane(2,minZ,start) :
+                self.DrawBottom(start, end, 0)
 
         self.tFront.hideturtle()
         self.tBehind.hideturtle()
@@ -98,94 +132,33 @@ class Draw2D :
         self.tFront.pendown()
         self.tFront.goto(coor1, coor2)
         self.tFront.penup()
-    
+
+
     def DrawLineBehind(self, coor1, coor2) :
         self.tBehind.pendown()
         self.tBehind.goto(coor1, coor2)
         self.tBehind.penup()
 
-    def CheckBehind(self, top, minX, maxX, minY, maxY, minZ, maxZ, start, end):
-        if self.CheckTopPlane(top,start) :
-            return 0
-        elif (start[0] > minX and
+    def CheckBehind(self,minX, maxX, minY, maxY, minZ, maxZ, start, end):
+        if ((start[0] > minX and
         start[0] < maxX and
         start[1] > minY and
         start[1] < maxY and
         start[2] > minZ and
-        start[2] < maxZ and
-        end[0] > minX and
+        start[2] < maxZ) or
+        (end[0] > minX and
         end[0] < maxX and
         end[1] > minY and
         end[1] < maxY and
         end[2] > minZ and
-        end[2] < maxZ) :
+        end[2] < maxZ)) :
             return 1
         else :
             return 0
 
 
-    def CheckTopPlane(self,top,start) :
-        if start[0] == top:
-            return 1
-        else :
-            return 0
-
-
-    def BehindXPlane(self, minX, maxX, minY, maxY, minZ, maxZ, start, end) :
-        if start[0] == maxX:
-            return 0
-        elif (start[0] > minX and
-        start[0] < maxX and
-        start[1] > minY and
-        start[1] < maxY and
-        start[2] > minZ and
-        start[2] < maxZ and
-        end[0] > minX and
-        end[0] < maxX and
-        end[1] > minY and
-        end[1] < maxY and
-        end[2] > minZ and
-        end[2] < maxZ) :
-            return 1
-        else :
-            return 0
-
-
-    def BehindYPlane(self, minX, maxX, minY, maxY, minZ, maxZ, start, end) :
-        if start[1] == maxY:
-            return 0
-        elif ( start[1] > minX and
-        start[0] < maxX and
-        start[1] > minY and
-        start[1] < maxY and
-        start[2] > minZ and
-        start[2] < maxZ and
-        end[0] > minX and
-        end[0] < maxX and
-        end[1] > minY and
-        end[1] < maxY and
-        end[2] > minZ and
-        end[2] < maxZ) :
-            return 1
-        else :
-            return 0
-
-
-    def BehindZPlane(self, minX, maxX, minY, maxY, minZ, maxZ, start, end) :
-        if start[2] == maxZ:
-            return 0
-        elif ( start[1] > minX and
-        start[0] < maxX and
-        start[1] > minY and
-        start[1] < maxY and
-        start[2] > minZ and
-        start[2] < maxZ and
-        end[0] > minX and
-        end[0] < maxX and
-        end[1] > minY and
-        end[1] < maxY and
-        end[2] > minZ and
-        end[2] < maxZ) :
+    def CheckTopPlane(self,coor,top,start) :
+        if start[coor] == top:
             return 1
         else :
             return 0
@@ -224,7 +197,11 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
-        self.DrawLine(endX, endZ)
+        if behind == 1 :
+            self.DrawLineBehind(endX, endZ)
+        else :
+            self.DrawLine(endX, endZ)
+
 
 
     def DrawLeft(self, start, end, behind) :
@@ -234,7 +211,10 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
-        self.DrawLine(endX, endZ)
+        if behind == 1 :
+            self.DrawLineBehind(endX, endZ)
+        else :
+            self.DrawLine(endX, endZ)
 
 
     def DrawTop(self, start, end, behind) :
@@ -244,7 +224,10 @@ class Draw2D :
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
-        self.DrawLine(endY, endX)
+        if behind == 1 :
+            self.DrawLineBehind(endY, endX)
+        else :
+            self.DrawLine(endY, endX)
 
 
     def DrawBottom(self, start, end, behind) :
@@ -254,4 +237,7 @@ class Draw2D :
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
-        self.DrawLine(endY, endX)
+        if behind == 1 :
+            self.DrawLineBehind(endY, endX)
+        else :
+            self.DrawLine(endY, endX)
