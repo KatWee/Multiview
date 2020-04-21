@@ -72,20 +72,34 @@ class Draw3D:
             end = self.verticies[edge[1]]
             endYZ = (end[1]*10,end[2]*10)
 
-            #for the frontest plane
-            if start[0] == end[0] and start[0] == max:
-                self.SamePlane(startYZ, endYZ)
-            elif start[0] > end[0] and start[0] == max:
-                self.GoToBackPlane(startYZ, start[0], end[0])
+            #x max plane
+            if start[0] == max :
+                self.JumpTo(startYZ[0],startYZ[1])
+                self.t.pendown()
+                #horizon edge
+                if start[0] == end[0] and start[1] < end[1] :
+                    self.GoRight(startYZ, endYZ)
+                #vertical edge
+                elif start[0] == end[0] and start[2] < end[2] :
+                    self.GoUp(startYZ, endYZ)
+                #slanting edge
+                elif start[0] > end[0] and start[0] == max:
+                    self.GoBackPlane(start[0], end[0])
 
-            #for the other planes
-            elif start[0] == end[0] and start[1] < end[1] :
-                self.BackPlaneGoRight(max, start[0], startYZ, endYZ)
-            elif start[0] == end[0] and start[2] < end[2] :
-                self.BackPlaneGoUp(max, start[0], startYZ, endYZ)
-            elif start[0] > end[0] :
-                self.BackPlaneGoUp(max, start[0], startYZ, endYZ)
-
+            #for the other plane
+            else :
+                self.JumpTo(startYZ[0],startYZ[1])
+                self.GoBackPlane(max, start[0])
+                self.t.pendown()
+                #horizon edge
+                if start[0] == end[0] and start[1] < end[1] :
+                    self.GoRight(startYZ, endYZ)
+                #vertical edge
+                elif start[0] == end[0] and start[2] < end[2] :
+                    self.GoUp(startYZ, endYZ)
+                #slanting edge
+                elif start[0] > end[0] :
+                    self.GoBackPlane(start[0], end[0])
         turtle.done()
 
 
@@ -97,49 +111,25 @@ class Draw3D:
         return max
 
 
-    def SamePlane(self, startYZ, endYZ):
+    def JumpTo(self, startY, startZ):
         self.t.penup()
-        self.t.goto(startYZ[0],startYZ[1])
-        self.t.pendown()
-        self.t.goto(endYZ[0],endYZ[1])
-        self.t.penup()
+        self.t.goto(startY, startZ)
 
 
-    def GoToBackPlane(self, startYZ, startX, endX):
-        self.t.penup()
-        self.t.goto(startYZ[0],startYZ[1])
-        self.t.pendown()
+    def GoRight(self, startYZ, endYZ) :
+        goRight = endYZ[0] - startYZ[0]
+        self.t.forward(goRight)
+
+
+    def GoUp(self, startYZ, endYZ) :
+        self.t.left(90)
+        goUp = endYZ[1] - startYZ[1]
+        self.t.forward(goUp)
+        self.t.right(90)
+
+
+    def GoBackPlane(self, startX, endX):
         self.t.left(30)
         goback = startX*5 - endX*5
         self.t.forward(goback)
         self.t.right(30)
-        self.t.penup()
-
-
-    def BackPlaneGoRight(self, max, startX, startYZ, endYZ):
-        self.t.penup()
-        self.t.goto(startYZ[0],startYZ[1])
-        self.t.left(30)
-        goback = max*5 - startX*5
-        self.t.forward(goback)
-        self.t.right(30)
-
-        goright = endYZ[0] - startYZ[0]
-        self.t.pendown()
-        self.t.forward(goright)
-        self.t.penup()
-
-    def BackPlaneGoUp(self, max, startX, startYZ, endYZ):
-        self.t.penup()
-        self.t.goto(startYZ[0],startYZ[1])
-        self.t.left(30)
-        goback = max*5 - startX*5
-        self.t.forward(goback)
-        self.t.right(30)
-
-        goup = endYZ[1] - startYZ[1]
-        self.t.pendown()
-        self.t.left(90)
-        self.t.forward(goup)
-        self.t.right(90)
-        self.t.penup()
