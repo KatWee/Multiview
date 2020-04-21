@@ -1,3 +1,1 @@
 class Draw2D :
-
-    
