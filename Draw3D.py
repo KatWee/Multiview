@@ -62,6 +62,7 @@ class Draw3D:
         self.s.screensize(800,800,bg="white")
         self.t.pencolor("black")
         self.t.pensize(3)
+        self.t.speed(10)
 
         max = self.FindMaxX()
 
@@ -100,6 +101,8 @@ class Draw3D:
                 #slanting edge
                 elif start[0] > end[0] :
                     self.GoBackPlane(start[0], end[0])
+
+        self.t.hideturtle()
         turtle.done()
 
 
