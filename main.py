@@ -1,5 +1,5 @@
 from Draw3D import Draw3D
-#from Draw2D import Draw2D
+from Draw2D import Draw2D
 
 verticies = (
     (7, -7, -7), (7, 7, -7), (-7, -7, -7), (-7, 7, -7), #0, 1, 2, 3
@@ -84,7 +84,8 @@ def main():
         d3 = Draw3D(edges, verticies)
         d3.show3D()
     elif userin == 2:
-        print("2D")
+        d2 = Draw2D(edges, verticies)
+        d2.show2D()
     else :
         print("Exit Program")
 

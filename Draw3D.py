@@ -47,7 +47,6 @@
 
 
 import turtle
-import time
 class Draw3D:
 
     def __init__(self, edges, verticies):
