@@ -18,7 +18,7 @@ class Draw2D :
         self.tFront.pensize(3)
         self.tFront.speed(0)
 
-        self.tBehind.pencolor("Gray")
+        self.tBehind.pencolor("red")
         self.tBehind.pensize(3)
         self.tBehind.speed(0)
 
@@ -26,71 +26,81 @@ class Draw2D :
         maxY, minY = self.FindMinMax(1)
         maxZ, minZ = self.FindMinMax(2)
 
-        ##draw behind line
-        # for edge in self.edges:
-        #     start = self.verticies[edge[0]]
-        #     end = self.verticies[edge[1]]
+        #draw behind line
+        for edge in self.edges:
+            start = self.verticies[edge[0]]
+            end = self.verticies[edge[1]]
 
-        #     #front view
-        #     self.DrawFront(start, end, 1)
+            #front view
+            self.DrawFront(start, end, 1)
 
-        #     #back view
-        #     self.DrawBack(start, end, 1)
+            #back view
+            self.DrawBack(start, end, 1)
 
-        #     #right view
-        #     self.DrawRight(start, end, 1)
+            #right view
+            self.DrawRight(start, end, 1)
 
-        #     #left view
-        #     self.DrawLeft(start, end, 1)
+            #left view
+            self.DrawLeft(start, end, 1)
 
-        #     #top view
-        #     self.DrawTop(start, end, 1)
+            #top view
+            self.DrawTop(start, end, 1)
 
-        #     #bottom view
-        #     self.DrawBottom(start, end, 1)
+            #bottom view
+            self.DrawBottom(start, end, 1)
 
         #draw nearest line
         sameX = self.SurfaceView(0)
         frontSort = self.SortDept (minX, maxX, 0, sameX)
-        backSort = frontSort.reverse()
+        backSort = frontSort[::-1]
         sameY = self.SurfaceView(1)
         rightSort = self.SortDept (minY, maxY, 1, sameY)
-        leftSort = rightSort.reverse()
+        leftSort = rightSort[::-1]
         sameZ = self.SurfaceView(2)
         topSort = self.SortDept (minZ, maxZ, 2, sameZ)
-        bottomSort = topSort.reverse()
+        bottomSort = topSort[::-1]
 
-        # front, back = self.Isvisible (sameX, 1, 2)
-        # right, left = self.Isvisible (sameY, 0, 2)
-        # top, bottom = self.Isvisible (sameZ, 1, 0)
+        frontPlane = self.Isvisible(frontSort, 0, 1, 2, maxX)
+        backPlane = self.Isvisible(backSort, 0, 1, 2, minX)
+        rightPlane= self.Isvisible(rightSort, 1, 0, 2, maxY)
+        leftPlane= self.Isvisible(leftSort, 1, 0, 2, minY)
+        topPlane= self.Isvisible(topSort, 2, 1, 0, maxZ)
+        bottomPlane= self.Isvisible(bottomSort, 2, 1, 0, minZ)
 
-        # for edge in self.edges:
-        #     start = self.verticies[edge[0]]
-        #     end = self.verticies[edge[1]]
 
-        #     #front view
-        #     if self.SelectEdge (front, start, end) :
-        #         self.DrawFront(start, end, 0)
+        for edge in self.edges:
+            start = self.verticies[edge[0]]
+            end = self.verticies[edge[1]]
 
-        #     #back view
-        #     if self.SelectEdge (back, start, end) :
-        #        self.DrawBack(start, end, 0)
+            #front view
+            if (self.IsinPlane(frontPlane, start) and
+            self.IsinPlane(frontPlane, end)) :
+                self.DrawFront(start, end, 0)
 
-        #     #right view
-        #     if self.SelectEdge (right, start, end) :
-        #         self.DrawRight(start, end, 0)
+            #back view
+            if (self.IsinPlane(backPlane, start) and
+            self.IsinPlane(backPlane, end)) :
+                self.DrawBack(start, end, 0)
 
-        #     # #left view
-        #     if self.SelectEdge (left, start, end) :
-        #         self.DrawLeft(start, end, 0)
+            #right view
+            if (self.IsinPlane(rightPlane, start) and
+            self.IsinPlane(rightPlane, end)) :
+                self.DrawRight(start, end, 0)
 
-        #     #top view
-        #     if self.SelectEdge (top, start, end) :
-        #         self.DrawTop(start, end, 0)
+            # #left view
+            if (self.IsinPlane(leftPlane, start) and
+            self.IsinPlane(leftPlane, end)) :
+                self.DrawLeft(start, end, 0)
 
-        #     #bottom view
-        #     if self.SelectEdge (bottom, start, end) :
-        #        self.DrawBottom(start, end, 0)
+            #top view
+            if (self.IsinPlane(topPlane, start) and
+            self.IsinPlane(topPlane, end)) :
+                self.DrawTop(start, end, 0)
+
+            #bottom view
+            if (self.IsinPlane(bottomPlane, start) and
+            self.IsinPlane(bottomPlane, end)) :
+               self.DrawBottom(start, end, 0)
 
 
         self.tFront.hideturtle()
@@ -126,103 +136,6 @@ class Draw2D :
         self.tBehind.pendown()
         self.tBehind.goto(coor1, coor2)
         self.tBehind.penup()
-
-
-    # def Scan (self, minV, maxV, minH, maxH, d, v, h, near) :
-    #     row = maxV
-    #     list = []
-    #     vertexList = []
-
-    #     while row >= minV :
-    #         col = minH
-    #         while col <= maxH :
-
-    #             for vertex in self.verticies :
-    #                 if ( vertex[v] == row and
-    #                 vertex[h] == col ) :
-    #                     list.append(vertex)
-
-    #             if list != [] :
-    #                 vertexList.append(list)
-    #                 list = []
-
-    #             col += 1
-    #         row -= 1
-
-    #     visible = self.SelectVertex (vertexList, d, near)
-    #     return visible
-
-
-    # def SelectVertex (self, vertexList, d, near) :
-    #     visible = []
-    #     for list in vertexList :
-    #         select = list[0]
-    #         for vertex in list :
-    #             if near == 1 :
-    #                 if(select[d] < vertex[d]) :
-    #                     select = vertex
-    #             else :
-    #                 if(select[d] > vertex[d]) :
-    #                     select = vertex
-    #         visible.append(select)
-
-    #     return visible
-
-
-    # def IsVisible(self,start, end, nearest, near, coord, coorv, coorh) :
-    #     if self.IsNearest(coord, nearest, start, end) :
-    #         print('top',start,end)
-    #         return 1
-    #     else :
-    #         if self.IsNear(near, start, end, coord, coorv, coorh) :
-    #             print('near',start,end)
-    #             return 1
-    #         else :
-    #             return 0
-
-
-    # def IsNearest(self, coor, nearest, start, end) :
-    #     if (start[coor] == nearest and
-    #     end[coor] == nearest) :
-    #         return 1
-    #     else :
-    #         return 0
-
-
-    # def IsNear(self, near, start, end, coord, coorv, coorh) :
-    #     if near == 1 :
-    #         maxS = self.FindNear(start, coorv, coorh, coord)
-    #         maxE = self.FindNear(end, coorv, coorh, coord)
-    #     else :
-    #         maxS = self.FindDept(start, coorv, coorh, coord)
-    #         maxE = self.FindDept(end, coorv, coorh, coord)
-
-    #     if (start[coord] == maxS and
-    #     end[coord] == maxE ) :
-    #         return 1
-    #     else :
-    #         return 0
-
-
-
-    # def FindNear(self, point, coorv, coorh, coord) :
-    #     max = point[coord]
-    #     for vertex in self.verticies :
-    #         if (point[coorv] == vertex[coorv] and
-    #         point[coorh] == vertex[coorh] ) :
-    #             if vertex[coord] > max :
-    #                 max = vertex[coord]
-    #     return max
-
-
-    # def FindDept(self, point, coorv, coorh, coord) :
-    #     min = point[coord]
-    #     for vertex in self.verticies :
-    #         if (point[coorv] == vertex[coorv] and
-    #         point[coorh] == vertex[coorh] ) :
-    #             if vertex[coord] < min :
-    #                 min = vertex[coord]
-    #     return min
 
 
     def DrawFront(self, start, end, behind) :
@@ -351,66 +264,54 @@ class Draw2D :
         return sort
 
 
-    # def FindMinMaxPlane (self, surface, w, h) :
-    #     maxh = surface[0][0][h]
-    #     minh = surface[0][0][h]
-    #     maxw = surface[0][0][w]
-    #     minw = surface[0][0][w]
-    #     for plane in surface :
-    #         for vertex in plane :
-    #             if maxh < vertex[h] :
-    #                 maxh = vertex[h]
-    #             if minh > vertex[h] :
-    #                 minh = vertex[h]
-    #             if maxw < vertex[w] :
-    #                 maxw = vertex[w]
-    #             if minw > vertex[w] :
-    #                 minw = vertex[w]
-    #     return maxh, minh, maxw, minw
+    def FindLimitPlane (self, plane, w, h) :
+        maxh = plane[0][h]
+        minh = plane[0][h]
+        maxw = plane[0][w]
+        minw = plane[0][w]
+        for vertex in plane :
+            if maxh < vertex[h] :
+                maxh = vertex[h]
+            if minh > vertex[h] :
+                minh = vertex[h]
+            if maxw < vertex[w] :
+                maxw = vertex[w]
+            if minw > vertex[w] :
+                minw = vertex[w]
+        return [maxh, minh, maxw, minw]
 
 
-    # def Isvisible (self, surface, w, h) :
-    #     visible  = []
-    #     invisible = []
-    #     for vertex in surface[0]:
-    #         visible.append(vertex)
-    #     temp = len(visible)
+    def Isvisible (self, surface, d, w, h, max) :
+        visible = []
+        limit = []
+        for plane in surface :
+            if plane[0][d] == max :
+                vis = 1
+            else :
+                check = len(plane)
+                for vertex in plane :
+                    for lim in limit :
+                        if( lim[0] >= vertex[h] and
+                        lim[1] <= vertex[h] and
+                        lim[2] >= vertex[w] and
+                        lim[3] <= vertex[w] ) :
+                            check -= 1
 
-    #     for plane in surface :
-    #         for vertex in plane :
-    #             if self.Isin(visible, vertex, w, h) == 0:
-    #                 visible.append(vertex)
-    #             else :
-    #                 invisible.append(vertex)
+                if check <= 0 :
+                    vis = 0
+                else :
+                    vis = 1
 
-    #     i=0
-    #     while i <= temp :
-    #         invisible.pop(i)
-    #         i += 1
+            if vis == 1 :
+                minmax = self.FindLimitPlane (plane, w, h)
+                limit.append(minmax)
+                visible.append(plane)
 
-    #     return visible, invisible
+        return visible
 
 
-    # def Isin (self, list, element, w, h) :
-    #     for elem in list :
-    #         if (elem[w] == element[w] and 
-    #         elem[h] == element[h]):
-    #             return 1
-    #     return 0
-
-    # def SelectEdge (self, visible, start, end) :
-    #     foundStart = 0
-    #     foundEnd = 0
-
-    #     for vertex in visible :
-    #         if vertex == start :
-    #             foundStart = 1
-
-    #     for vertex in visible :
-    #         if vertex == end :
-    #             foundEnd = 1
-
-    #     if foundStart or foundEnd :
-    #         return 1
-    #     else :
-    #         return 0
+    def IsinPlane (self, surface, point) :
+        for plane in surface :
+            for vertex in plane :
+                if point == vertex :
+                    return 1
