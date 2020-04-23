@@ -14,11 +14,11 @@ class Draw2D :
         self.s.title("2D")
         self.s.screensize(800,800,bg="white")
 
-        self.tFront.pencolor("Black")
+        self.tFront.pencolor("pink")
         self.tFront.pensize(3)
         self.tFront.speed(0)
 
-        self.tBehind.pencolor("red")
+        self.tBehind.pencolor("gray")
         self.tBehind.pensize(3)
         self.tBehind.speed(0)
 
