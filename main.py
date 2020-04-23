@@ -26,8 +26,8 @@ edges = (
     (5, 14),
     #left ear
     (6, 7), (6, 9),
-    (7, 10), (7,8),
-    (8,12), (8,15),
+    (7, 10), (7, 8),
+    (8, 12), (8, 15),
     (9, 10), (9, 11),
     (10, 12),
     (11, 12), (11, 28),
@@ -65,6 +65,40 @@ edges = (
     (44, 45)
     )
 
+surfaces = (
+    #head
+    (0, 1, 4, 5), #front
+    (2, 3, 28, 11, 12, 8, 15, 18, 19, 29), #back
+    (1, 3, 5, 14, 17, 19, 29, 3), #right
+    (0, 2, 4, 6, 9, 11, 28), #left
+    (4, 5, 6, 7, 8, 15, 13, 14), #top
+    #left ear
+    (6, 7, 9, 10), #front
+    (7, 8, 10, 12), #right
+    (9, 10, 11, 12), #top
+    #right ear
+    (13, 14, 16, 17), #front
+    (13, 15, 16, 18), #left
+    (16, 17, 18, 19), #top
+    #nose
+    (20, 21, 24, 25), #front
+    (21, 23, 25, 27), #right
+    (20, 22, 24, 26), #left
+    (24, 25, 26, 27), #top
+    (20, 21, 22, 23), #bottom
+    #left eye
+    (30, 31, 34, 35), #front
+    (31, 33, 35, 37), #right
+    (30, 32, 34, 36), #left
+    (34, 35, 36, 37), #top
+    (30, 31, 32, 33), #bottom
+    #right eye
+    (38, 39, 42, 43), #front
+    (39, 41, 43, 45), #right
+    (38, 40, 42, 44), #left
+    (42, 43, 44, 45), #top
+    (38, 39, 40, 41) #bottom
+)
 
 def main():
     print("===================================")
@@ -85,7 +119,7 @@ def main():
         d3 = Draw3D(edges, verticies)
         d3.show3D()
     elif userin == 2:
-        d2 = Draw2D(edges, verticies)
+        d2 = Draw2D(edges, verticies, surfaces)
         d2.show2D()
     else :
         print("Exit Program")
