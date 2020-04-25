@@ -5,8 +5,7 @@ class Draw2D :
         self.edges = edges
         self.verticies = verticies
         self.surfaces = surfaces
-        self.tFront = turtle.Turtle()
-        self.tBehind = turtle.Turtle()
+        self.t = turtle.Turtle()
         self.s = turtle.Screen()
 
 
@@ -14,13 +13,9 @@ class Draw2D :
         self.s.title("2D")
         self.s.screensize(800,800,bg="white")
 
-        self.tFront.pencolor("pink")
-        self.tFront.pensize(3)
-        self.tFront.speed(0)
-
-        self.tBehind.pencolor("gray")
-        self.tBehind.pensize(3)
-        self.tBehind.speed(0)
+        self.t.pencolor("gray")
+        self.t.pensize(3)
+        self.t.speed(0)
 
         maxX, minX = self.FindMinMax(0)
         maxY, minY = self.FindMinMax(1)
@@ -66,7 +61,7 @@ class Draw2D :
         topPlane= self.Isvisible(topSort, 2, 1, 0, maxZ)
         bottomPlane= self.Isvisible(bottomSort, 2, 1, 0, minZ)
 
-
+        self.t.pencolor("pink")
         for edge in self.edges:
             start = self.verticies[edge[0]]
             end = self.verticies[edge[1]]
@@ -101,9 +96,7 @@ class Draw2D :
             self.IsinPlane(bottomPlane, end)) :
                self.DrawBottom(start, end, 0)
 
-
-        self.tFront.hideturtle()
-        self.tBehind.hideturtle()
+        self.t.hideturtle()
         turtle.done()
 
 
@@ -119,22 +112,14 @@ class Draw2D :
 
 
     def JumpTo(self, coor1, coor2) :
-        self.tFront.penup()
-        self.tFront.goto(coor1, coor2)
-        self.tBehind.penup()
-        self.tBehind.goto(coor1, coor2)
+        self.t.penup()
+        self.t.goto(coor1, coor2)
 
 
     def DrawLine(self, coor1, coor2) :
-        self.tFront.pendown()
-        self.tFront.goto(coor1, coor2)
-        self.tFront.penup()
-
-
-    def DrawLineBehind (self, coor1, coor2) :
-        self.tBehind.pendown()
-        self.tBehind.goto(coor1, coor2)
-        self.tBehind.penup()
+        self.t.pendown()
+        self.t.goto(coor1, coor2)
+        self.t.penup()
 
 
     def DrawFront(self, start, end, behind) :
@@ -144,10 +129,7 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startY, startZ)
-        if behind == 1 :
-            self.DrawLineBehind(endY, endZ)
-        else :
-            self.DrawLine(endY, endZ)
+        self.DrawLine(endY, endZ)
 
 
     def DrawBack(self, start, end, behind) :
@@ -157,10 +139,7 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startY, startZ)
-        if behind == 1 :
-            self.DrawLineBehind(endY, endZ)
-        else :
-            self.DrawLine(endY, endZ)
+        self.DrawLine(endY, endZ)
 
 
     def DrawRight(self, start, end, behind) :
@@ -170,10 +149,7 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
-        if behind == 1 :
-            self.DrawLineBehind(endX, endZ)
-        else :
-            self.DrawLine(endX, endZ)
+        self.DrawLine(endX, endZ)
 
 
 
@@ -184,10 +160,7 @@ class Draw2D :
         endZ = end[2] * 5
 
         self.JumpTo(startX, startZ)
-        if behind == 1 :
-            self.DrawLineBehind(endX, endZ)
-        else :
-            self.DrawLine(endX, endZ)
+        self.DrawLine(endX, endZ)
 
 
     def DrawTop(self, start, end, behind) :
@@ -197,10 +170,7 @@ class Draw2D :
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
-        if behind == 1 :
-            self.DrawLineBehind(endY, endX)
-        else :
-            self.DrawLine(endY, endX)
+        self.DrawLine(endY, endX)
 
 
     def DrawBottom(self, start, end, behind) :
@@ -210,10 +180,7 @@ class Draw2D :
         endY = end[1] * 5
 
         self.JumpTo(startY, startX)
-        if behind == 1 :
-            self.DrawLineBehind(endY, endX)
-        else :
-            self.DrawLine(endY, endX)
+        self.DrawLine(endY, endX)
 
 
     def SurfaceView(self, d) :

@@ -57,46 +57,48 @@ class Draw3D:
 
 
     def show3D(self):
+        #init turtle
         self.s.title("3D")
         self.s.screensize(800,800,bg="white")
         self.t.pencolor("black")
         self.t.pensize(3)
         self.t.speed(10)
 
+        #find max X
         max = self.FindMaxX()
 
+        #for each edge
         for edge in self.edges:
+            #star vertex edge
             start = self.verticies[edge[0]]
-            startYZ = (start[1]*10,start[2]*10)
-
+            #end vertex in edge
             end = self.verticies[edge[1]]
-            endYZ = (end[1]*10,end[2]*10)
 
             #x max plane
             if start[0] == max :
-                self.JumpTo(startYZ[0],startYZ[1])
+                self.JumpTo(start[1],start[2])
                 self.t.pendown()
                 #horizon edge
                 if start[0] == end[0] and start[1] < end[1] :
-                    self.GoRight(startYZ, endYZ)
+                    self.GoRight(start, end)
                 #vertical edge
                 elif start[0] == end[0] and start[2] < end[2] :
-                    self.GoUp(startYZ, endYZ)
+                    self.GoUp(start, end)
                 #slanting edge
                 elif start[0] > end[0] and start[0] == max:
                     self.GoBackPlane(start[0], end[0])
 
             #for the other plane
             else :
-                self.JumpTo(startYZ[0],startYZ[1])
+                self.JumpTo(start[1],start[2])
                 self.GoBackPlane(max, start[0])
                 self.t.pendown()
                 #horizon edge
                 if start[0] == end[0] and start[1] < end[1] :
-                    self.GoRight(startYZ, endYZ)
+                    self.GoRight(start, end)
                 #vertical edge
                 elif start[0] == end[0] and start[2] < end[2] :
-                    self.GoUp(startYZ, endYZ)
+                    self.GoUp(start, end)
                 #slanting edge
                 elif start[0] > end[0] :
                     self.GoBackPlane(start[0], end[0])
@@ -107,25 +109,25 @@ class Draw3D:
 
     def FindMaxX(self):
         max = 0
-        for vertice in self.verticies:
-            if vertice[0] > max:
-                max = vertice[0]
+        for vertex in self.verticies:
+            if vertex[0] > max: #vertex[0] = x
+                max = vertex[0]
         return max
 
 
     def JumpTo(self, startY, startZ):
         self.t.penup()
-        self.t.goto(startY, startZ)
+        self.t.goto(startY*10, startZ*10)
 
 
-    def GoRight(self, startYZ, endYZ) :
-        goRight = endYZ[0] - startYZ[0]
+    def GoRight(self, start, end) :
+        goRight = end[1]*10 - start[1]*10
         self.t.forward(goRight)
 
 
-    def GoUp(self, startYZ, endYZ) :
+    def GoUp(self, start, end) :
         self.t.left(90)
-        goUp = endYZ[1] - startYZ[1]
+        goUp = end[2]*10 - start[2]*10
         self.t.forward(goUp)
         self.t.right(90)
 
