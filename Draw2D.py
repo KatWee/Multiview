@@ -49,7 +49,6 @@ class Draw2D :
             #bottom view
             self.DrawBottom(start, end, 1)
 
-        #draw nearest line
         sameX = self.SurfaceView(0)
         frontSort = self.SortDept (minX, maxX, 0, sameX)
         backSort = frontSort[::-1]
