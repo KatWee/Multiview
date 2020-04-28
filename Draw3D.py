@@ -16,42 +16,45 @@ class Draw3D:
         self.t.pensize(3)
         self.t.speed(10)
 
-        #find max X
+        #find max X (the less dept)
         max = self.FindMaxX()
 
         #for each edge
         for edge in self.edges:
-            #star vertex edge
+            #stat vertex in a edge
             start = self.verticies[edge[0]]
-            #end vertex in edge
+            #end vertex in a edge
             end = self.verticies[edge[1]]
 
-            #x max plane
+            #for the less dept plane
             if start[0] == max :
+                #go to start point
                 self.JumpTo(start[1],start[2])
                 self.t.pendown()
-                #horizon edge
+                #draw horizon edge to end point
                 if start[0] == end[0] and start[1] < end[1] :
                     self.GoRight(start, end)
-                #vertical edge
+                #draw vertical edge to end point
                 elif start[0] == end[0] and start[2] < end[2] :
                     self.GoUp(start, end)
-                #slanting edge
+                #draw slanting edge to end point
                 elif start[0] > end[0] and start[0] == max:
                     self.GoBackPlane(start[0], end[0])
 
             #for the other plane
             else :
+                #go to (y, z) of start point
                 self.JumpTo(start[1],start[2])
+                #go to the plane that start point is in
                 self.GoBackPlane(max, start[0])
                 self.t.pendown()
-                #horizon edge
+                #draw horizon edge to end point
                 if start[0] == end[0] and start[1] < end[1] :
                     self.GoRight(start, end)
-                #vertical edge
+                #draw vertical edge to end point
                 elif start[0] == end[0] and start[2] < end[2] :
                     self.GoUp(start, end)
-                #slanting edge
+                #draw slanting edge to end point
                 elif start[0] > end[0] :
                     self.GoBackPlane(start[0], end[0])
 

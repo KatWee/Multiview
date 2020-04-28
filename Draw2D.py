@@ -10,46 +10,49 @@ class Draw2D :
 
 
     def show2D(self):
+        #init turtle
         self.s.title("2D")
         self.s.screensize(800,800,bg="white")
-
-        self.t.pencolor("gray")
+        self.t.pencolor("gray") #color for hidden line
         self.t.pensize(3)
         self.t.speed(0)
 
+        #find the less dept for each view
         maxX, minX = self.FindMinMax(0)
         maxY, minY = self.FindMinMax(1)
         maxZ, minZ = self.FindMinMax(2)
 
         #draw behind line
         for edge in self.edges:
+            #stat vertex in a edge
             start = self.verticies[edge[0]]
+            #end vertex in a edge
             end = self.verticies[edge[1]]
 
-            #front view
+            #draw front view
             self.DrawFront(start, end, 1)
 
-            #back view
+            #draw back view
             self.DrawBack(start, end, 1)
 
-            #right view
+            #draw right view
             self.DrawRight(start, end, 1)
 
-            #left view
+            #draw left view
             self.DrawLeft(start, end, 1)
 
-            #top view
+            #draw top view
             self.DrawTop(start, end, 1)
 
-            #bottom view
+            #draw bottom view
             self.DrawBottom(start, end, 1)
 
-        #find surface in each plane
-        sameX = self.SurfaceView(0)
-        sameY = self.SurfaceView(1)
-        sameZ = self.SurfaceView(2)
+        #find surface in each view
+        sameX = self.SurfaceView(0) #front and back
+        sameY = self.SurfaceView(1) #right and left
+        sameZ = self.SurfaceView(2) #top and bottom
 
-        #sort suface from nearest
+        #sort suface from less dept
         frontSort = self.SortDept (minX, maxX, 0, sameX)
         backSort = frontSort[::-1]
         rightSort = self.SortDept (minY, maxY, 1, sameY)
@@ -65,37 +68,40 @@ class Draw2D :
         topPlane= self.Isvisible(topSort, 2, 1, 0, maxZ)
         bottomPlane= self.Isvisible(bottomSort, 2, 1, 0, minZ)
 
-        self.t.pencolor("pink")
+        self.t.pencolor("pink") #color for the visible line
+        #draw visible line
         for edge in self.edges:
+            #stat vertex in a edge
             start = self.verticies[edge[0]]
+            #end vertex in a edge
             end = self.verticies[edge[1]]
 
-            #front view
+            #draw front view
             if (self.IsinPlane(frontPlane, start) and
             self.IsinPlane(frontPlane, end)) :
                 self.DrawFront(start, end, 0)
 
-            #back view
+            #draw back view
             if (self.IsinPlane(backPlane, start) and
             self.IsinPlane(backPlane, end)) :
                 self.DrawBack(start, end, 0)
 
-            #right view
+            #draw right view
             if (self.IsinPlane(rightPlane, start) and
             self.IsinPlane(rightPlane, end)) :
                 self.DrawRight(start, end, 0)
 
-            # #left view
+            #draw left view
             if (self.IsinPlane(leftPlane, start) and
             self.IsinPlane(leftPlane, end)) :
                 self.DrawLeft(start, end, 0)
 
-            #top view
+            #draw top view
             if (self.IsinPlane(topPlane, start) and
             self.IsinPlane(topPlane, end)) :
                 self.DrawTop(start, end, 0)
 
-            #bottom view
+            #draw bottom view
             if (self.IsinPlane(bottomPlane, start) and
             self.IsinPlane(bottomPlane, end)) :
                self.DrawBottom(start, end, 0)
@@ -131,7 +137,6 @@ class Draw2D :
         startZ = start[2] * 5
         endY = end[1] * 5
         endZ = end[2] * 5
-
         self.JumpTo(startY, startZ)
         self.DrawLine(endY, endZ)
 
@@ -141,7 +146,6 @@ class Draw2D :
         startZ = start[2] * 5
         endY = -end[1] * 5 - 200
         endZ = end[2] * 5
-
         self.JumpTo(startY, startZ)
         self.DrawLine(endY, endZ)
 
@@ -151,7 +155,6 @@ class Draw2D :
         startZ = start[2] * 5
         endX = -end[0] * 5 + 100
         endZ = end[2] * 5
-
         self.JumpTo(startX, startZ)
         self.DrawLine(endX, endZ)
 
@@ -162,7 +165,6 @@ class Draw2D :
         startZ = start[2] * 5
         endX = end[0] * 5 - 100
         endZ = end[2] * 5
-
         self.JumpTo(startX, startZ)
         self.DrawLine(endX, endZ)
 
@@ -172,7 +174,6 @@ class Draw2D :
         startY = start[1] * 5
         endX = -end[0] * 5 + 110
         endY = end[1] * 5
-
         self.JumpTo(startY, startX)
         self.DrawLine(endY, endX)
 
@@ -182,27 +183,27 @@ class Draw2D :
         startY = start[1] * 5
         endX = end[0] * 5 - 110
         endY = end[1] * 5
-
         self.JumpTo(startY, startX)
         self.DrawLine(endY, endX)
 
 
+    #find surface in each view
     def SurfaceView(self, d) :
         plane = []
         samePlane = []
+        #check all surface
         for surface in self.surfaces :
             dept = self.verticies[surface[0]]
             for vertex in surface :
+                #add surface that all vertecies have same dept to list
                 thisVertex = self.verticies[vertex]
-                if(dept[d] == thisVertex[d]) :
+                if(dept[d] == thisVertex[d]) : #dept in each veiw is defferent
                     plane.append(thisVertex)
                 else :
                     plane = []
-
             if plane != [] :
                 samePlane.append(plane)
                 plane = []
-
         return samePlane
 
 
@@ -214,10 +215,10 @@ class Draw2D :
                 if plane[0][d] == dept :
                     sort.append(plane)
             dept -= 1
-
         return sort
 
 
+    #find min max of each surface
     def FindLimitPlane (self, plane, w, h) :
         maxh = plane[0][h]
         minh = plane[0][h]
@@ -238,6 +239,7 @@ class Draw2D :
     def Isvisible (self, surface, d, w, h, max) :
         visible = []
         limit = []
+        #add the less dept surface to list
         for plane in surface :
             if plane[0][d] == max :
                 vis = 1
@@ -250,20 +252,26 @@ class Draw2D :
                         lim[2] >= vertex[w] and
                         lim[3] <= vertex[w] ) :
                             check -= 1
-
+                #if all vertex in this surface is inside all surface in list
+                #this surface in invisible
                 if check <= 0 :
                     vis = 0
                 else :
                     vis = 1
 
+            #if this surface is visible
             if vis == 1 :
+                #find min max of this surface and add to limit list
+                #for check that is the other planes inside this plane
                 minmax = self.FindLimitPlane (plane, w, h)
                 limit.append(minmax)
+                #add this surface in list
                 visible.append(plane)
 
         return visible
 
 
+    #check that the input vertex is in input surface
     def IsinPlane (self, surface, point) :
         for plane in surface :
             for vertex in plane :
