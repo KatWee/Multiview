@@ -44,16 +44,20 @@ class Draw2D :
             #bottom view
             self.DrawBottom(start, end, 1)
 
+        #find surface in each plane
         sameX = self.SurfaceView(0)
+        sameY = self.SurfaceView(1)
+        sameZ = self.SurfaceView(2)
+
+        #sort suface from nearest
         frontSort = self.SortDept (minX, maxX, 0, sameX)
         backSort = frontSort[::-1]
-        sameY = self.SurfaceView(1)
         rightSort = self.SortDept (minY, maxY, 1, sameY)
         leftSort = rightSort[::-1]
-        sameZ = self.SurfaceView(2)
         topSort = self.SortDept (minZ, maxZ, 2, sameZ)
         bottomSort = topSort[::-1]
 
+        #find visible surface
         frontPlane = self.Isvisible(frontSort, 0, 1, 2, maxX)
         backPlane = self.Isvisible(backSort, 0, 1, 2, minX)
         rightPlane= self.Isvisible(rightSort, 1, 0, 2, maxY)
@@ -200,22 +204,6 @@ class Draw2D :
                 plane = []
 
         return samePlane
-
-
-    def DrawPlane (self, start, end, near) :
-        foundStart = 0
-        foundEnd = 0
-        for plane in near :
-            for vertex in plane :
-                if start == vertex :
-                    foundStart = 1
-                if end == vertex :
-                    foundEnd = 1
-
-        if(foundStart and foundEnd) :
-            return 1
-        else :
-            return 0
 
 
     def SortDept (self, min, max, d,surface) :
